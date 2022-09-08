@@ -77,12 +77,96 @@ class DoublyLinkedList {
     return this;
   }
 
-  set(index, val) {}
+  set(index, val) {
+    if (!this.head) return undefined;
 
-  get(index) {}
+    let count = 0;
+    let currentHead = this.head;
 
-  insert() {}
-  remove() {}
+    if (index === 0) {
+      this.head.val = val;
+      return this;
+    }
+
+    if (index === this.length - 1) {
+      this.tail.val = val;
+      return this;
+    }
+
+    while (currentHead) {
+      if (index === count) {
+        currentHead.val = val;
+        return this;
+      }
+      count++;
+      currentHead = currentHead.next;
+    }
+  }
+
+  get(index) {
+    if (index < 0 || index > this.length - 1) {
+      return undefined;
+    }
+
+    let count = 0;
+    let currentHead = this.head;
+    while (currentHead) {
+      if (count === index) {
+        return currentHead;
+      }
+      count++;
+      currentHead = currentHead.next;
+    }
+
+    return undefined;
+  }
+
+  insert(index, val) {
+    if (index < 0 || index > this.length) {
+      return undefined;
+    }
+
+    const newNode = new Node(val);
+    let currentHead = this.head;
+    if (index === 0) {
+      currentHead.prev = newNode;
+      this.head = newNode;
+      newNode.prev = null;
+      newNode.next = currentHead;
+      this.length++;
+      return this;
+    }
+    if (index === this.length - 1) {
+      let prevTail = this.tail;
+      this.tail.next = newNode;
+      this.tail = newNode;
+      newNode.prev = prevTail;
+      this.length++;
+      return this;
+    }
+
+    let count = 0;
+    while (currentHead) {
+      if (count === index) {
+        // console.log(currentHead);
+        let prev = currentHead.prev;
+        prev.next = newNode;
+        newNode.next = currentHead;
+        newNode.prev = prev;
+        this.length++;
+        return this;
+      }
+      count++;
+      currentHead = currentHead.next;
+    }
+  }
+
+  // to-do
+  remove(index) {
+    if (index < 0 && index > this.length - 1) {
+      return undefined;
+    }
+  }
 }
 
 const test = new DoublyLinkedList();
@@ -90,5 +174,5 @@ test.push(1);
 test.push(2);
 test.push(3);
 test.push(4);
-test.unshift("A");
+test.insert(2, "test");
 console.log(test);
